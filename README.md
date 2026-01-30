@@ -1,4 +1,5 @@
 # 🍳 Chef Zubair - AI Recipe Generator 
+ [🚀 Live Demo](https://chef-zubair.onrender.com)
 
 A modern, high-performance React application that uses **AI (Grok)** to help users generate delicious recipes from the ingredients they have in their kitchen.
 
@@ -60,7 +61,7 @@ A modern, high-performance React application that uses **AI (Grok)** to help use
 | <img src="1.PNG" width="400" /> | <img src="2.PNG" width="400" /> |
 
 ---
-
+## 
 ## 👨‍💻 Developed By
 
 **Muhammad Zubair**
