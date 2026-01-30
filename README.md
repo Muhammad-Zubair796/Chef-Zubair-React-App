@@ -5,7 +5,7 @@
 Experience Chef Zubair on your Android device with our official APK.
 
 ### 📥 Direct Download
-[![Download APK](https://img.shields.io/badge/Download-APK-brightgreen?style=for-the-badge&logo=android&logoSize=large)](https://github.com/Muhammad-Zubair796/Chef-Zubair-React-App/releases/download/v1.0.0/Chef-Zubair-v1.0.apk)
+[![Download APK](https://img.shields.io/badge/Download-APK-brightgreen?style=for-the-badge&logo=android&logoSize=large)](https://github.com/Muhammad-Zubair796/Chef-Zubair-React-App/releases/download/v1.0.0/Chef-Zubair.apk)
 
 > **Note:** Since this is a self-signed APK, your phone might show a "Blocked by Play Protect" warning. Click **"Install Anyway"** to proceed.
 
