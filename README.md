@@ -51,9 +51,6 @@ A modern, high-performance React application that uses **AI (Grok)** to help use
 * **Icons:** Custom Emoji Vectors
 
 ---
-
-## 📸 Screenshots
-
 ## 📸 Screenshots
 
 | Adding Ingredients | AI Generating Recipe |
