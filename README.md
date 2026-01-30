@@ -13,7 +13,6 @@ A modern, high-performance React application that uses **AI (Grok)** to help use
 * **🤖 AI Integration:** Uses Grok AI to provide step-by-step cooking instructions.
 * **🔥 Immersive UI:** Features a dark-themed "Fire" dashboard with smooth CSS animations.
 * **🎈 Flying Icons:** Dynamic header with floating food emojis for a playful user experience.
-* **📜 Auto-Scroll:** Intelligent auto-scrolling that follows the AI response as it generates.
 * **♻️ Reset Kitchen:** Easily clear your workspace to start a fresh recipe.
 
 ---
@@ -54,9 +53,11 @@ A modern, high-performance React application that uses **AI (Grok)** to help use
 
 ## 📸 Screenshots
 
+## 📸 Screenshots
+
 | Adding Ingredients | AI Generating Recipe |
 | :---: | :---: |
-| ![Input Screen](https://via.placeholder.com/300x150?text=Dark+Input+UI) | ![Recipe Result](https://via.placeholder.com/300x150?text=AI+Recipe+Output) |
+| <img src="1.png" width="400" /> | <img src="2.png" width="400" /> |
 
 ---
 
