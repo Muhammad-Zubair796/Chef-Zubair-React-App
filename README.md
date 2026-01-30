@@ -57,7 +57,7 @@ A modern, high-performance React application that uses **AI (Grok)** to help use
 
 | Adding Ingredients | AI Generating Recipe |
 | :---: | :---: |
-| <img src="1.png" width="400" /> | <img src="2.png" width="400" /> |
+| <img src="1.PNG" width="400" /> | <img src="2.PNG" width="400" /> |
 
 ---
 
