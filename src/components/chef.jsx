@@ -7,7 +7,7 @@ export default function Main() {
     const [ingredients, setIngredients] = React.useState([]);
     const [recipe, setRecipe] = React.useState(""); 
     const [loading, setLoading] = React.useState(false);
-    const [language, setLanguage] = React.useState("English");
+    const [isUrdu, setIsUrdu] = React.useState(false);
     const [dishName, setDishName] = React.useState("");
     const formRef = React.useRef(null);
     const recipeEndRef = useRef(null);
@@ -21,12 +21,11 @@ export default function Main() {
     async function getRecipe(mode = "ingredients") {
         setRecipe(""); 
         setLoading(true);
-
-        const langContext = `The user wants the recipe in ${language}. If the input was in Roman Urdu, translate it and respond strictly in ${language === "Urdu" ? "Urdu Script" : "English"}.`;
+        const targetLang = isUrdu ? "Urdu" : "English";
         
         const prompt = mode === "dish" 
-            ? `Provide a full recipe for the dish: "${dishName}". ${langContext}`
-            : `I have these ingredients: ${ingredients.join(", ")}. Suggest a recipe. ${langContext}`;
+            ? `Give me a full recipe for "${dishName}" in ${targetLang}. Avoid Hindi/Arabic. Use English for hard words.`
+            : `I have: ${ingredients.join(", ")}. Suggest a recipe in ${targetLang}. Avoid Hindi/Arabic. Use English for hard words.`;
 
         try {
             const recipeMarkdown = await getRecipeFromGrok(prompt);
@@ -46,49 +45,40 @@ export default function Main() {
         }
     }
 
-    function handleDishSubmit(e) {
-        e.preventDefault();
-        if (dishName) getRecipe("dish");
-    }
-
     return (
         <main style={{ paddingBottom: "100px" }}>
-            {/* Pro Language Toggle */}
-            <div className="pro-toggle-container">
-                <div className="toggle-group">
-                    <button 
-                        className={language === "English" ? "toggle-btn active" : "toggle-btn"} 
-                        onClick={() => setLanguage("English")}
-                    >English</button>
-                    <button 
-                        className={language === "Urdu" ? "toggle-btn active" : "toggle-btn"} 
-                        onClick={() => setLanguage("Urdu")}
-                    >اردو (Urdu)</button>
-                </div>
+            {/* PRO TOGGLE SWITCH */}
+            <div className="language-toggle-container">
+                <span>English</span>
+                <label className="switch">
+                    <input type="checkbox" checked={isUrdu} onChange={() => setIsUrdu(!isUrdu)} />
+                    <span className="slider round"></span>
+                </label>
+                <span>اردو</span>
             </div>
 
-            {/* Helper Line */}
-            <div className="helper-info">
-                <p>📝 <strong>How to use:</strong> Enter a specific dish name below for a full recipe, OR add <strong>at least 4 ingredients</strong> to get a custom suggestion.</p>
+            <div className="helper-text">
+                <p>💡 <strong>Tip:</strong> Use the <strong>Dish Bar</strong> for a specific recipe (e.g. Biryani). <br />
+                To get a suggestion, add <strong>at least 4 ingredients</strong> you have on hand.</p>
             </div>
 
-            <div className="forms-wrapper">
+            <div className="input-wrapper">
                 <form ref={formRef} action={addIngredient} className="add-ingredient-form">
                     <input type="text" placeholder="Add ingredient (e.g. mutton)" name="ingredient" required />
                     <button type="submit">Add Ingredient</button>
                 </form>
 
-                <div className="divider"><span>OR</span></div>
+                <div className="or-divider">OR</div>
 
-                <form onSubmit={handleDishSubmit} className="add-ingredient-form dish-bar">
+                <form onSubmit={(e) => {e.preventDefault(); getRecipe("dish")}} className="add-ingredient-form">
                     <input 
                         type="text" 
-                        placeholder="Type dish name (e.g. Chicken Karahi / بریانی)" 
+                        placeholder="Enter dish name (e.g. Nihari / بریانی)" 
                         value={dishName}
                         onChange={(e) => setDishName(e.target.value)}
                         required
                     />
-                    <button type="submit" className="dish-btn">Get Full Dish Recipe</button>
+                    <button type="submit" className="dish-btn">Get Whole Dish Recipe</button>
                 </form>
             </div>
 
@@ -104,7 +94,7 @@ export default function Main() {
                 </div>
             )}
 
-            {loading && <p className="pulse">Chef Zubair is preparing your recipe in {language}... 🍳</p>}
+            {loading && <p className="pulse">Chef Zubair is thinking in {isUrdu ? "Urdu" : "English"}... 🍳</p>}
 
             {recipe && <ZubairRecipe markdown={recipe} />}
             
