@@ -7,7 +7,7 @@ export default function Main() {
     const [ingredients, setIngredients] = React.useState([]);
     const [recipe, setRecipe] = React.useState(""); 
     const [loading, setLoading] = React.useState(false);
-    const [isUrdu, setIsUrdu] = React.useState(false);
+    const [language, setLanguage] = React.useState("English");
     const [dishName, setDishName] = React.useState("");
     const formRef = React.useRef(null);
     const recipeEndRef = useRef(null);
@@ -21,11 +21,10 @@ export default function Main() {
     async function getRecipe(mode = "ingredients") {
         setRecipe(""); 
         setLoading(true);
-        const targetLang = isUrdu ? "Urdu" : "English";
         
         const prompt = mode === "dish" 
-            ? `Give me a full recipe for "${dishName}" in ${targetLang}. Avoid Hindi/Arabic. Use English for hard words.`
-            : `I have: ${ingredients.join(", ")}. Suggest a recipe in ${targetLang}. Avoid Hindi/Arabic. Use English for hard words.`;
+            ? `Give me a full recipe for "${dishName}" in ${language} mode. Avoid Hindi/Arabic.`
+            : `I have: ${ingredients.join(", ")}. Suggest a recipe in ${language} mode. Avoid Hindi/Arabic.`;
 
         try {
             const recipeMarkdown = await getRecipeFromGrok(prompt);
@@ -47,33 +46,36 @@ export default function Main() {
 
     return (
         <main style={{ paddingBottom: "100px" }}>
-            {/* PRO TOGGLE SWITCH */}
-            <div className="language-toggle-container">
-                <span>English</span>
-                <label className="switch">
-                    <input type="checkbox" checked={isUrdu} onChange={() => setIsUrdu(!isUrdu)} />
-                    <span className="slider round"></span>
+            {/* 3-OPTION RADIO TOGGLE */}
+            <div className="radio-toggle-container">
+                <label className="radio-label">
+                    <input type="radio" name="lang" value="English" checked={language === "English"} onChange={() => setLanguage("English")} />
+                    <span className="custom-radio"></span> English
                 </label>
-                <span>اردو</span>
+                <label className="radio-label">
+                    <input type="radio" name="lang" value="Urdu" checked={language === "Urdu"} onChange={() => setLanguage("Urdu")} />
+                    <span className="custom-radio"></span> Urdu
+                </label>
+                <label className="radio-label">
+                    <input type="radio" name="lang" value="Roman Urdu" checked={language === "Roman Urdu"} onChange={() => setLanguage("Roman Urdu")} />
+                    <span className="custom-radio"></span> Roman Urdu
+                </label>
             </div>
 
-            <div className="helper-text">
-                <p>💡 <strong>Tip:</strong> Use the <strong>Dish Bar</strong> for a specific recipe (e.g. Biryani). <br />
-                To get a suggestion, add <strong>at least 4 ingredients</strong> you have on hand.</p>
+            <div className="helper-info-box">
+                <p>💡 <strong>Chef's Guide:</strong> Use the <strong>Dish Bar</strong> to get a specific recipe instantly. To get a suggestion based on what you have, add <strong>at least 4 ingredients</strong>.</p>
             </div>
 
-            <div className="input-wrapper">
+            <div className="forms-stack">
                 <form ref={formRef} action={addIngredient} className="add-ingredient-form">
                     <input type="text" placeholder="Add ingredient (e.g. mutton)" name="ingredient" required />
                     <button type="submit">Add Ingredient</button>
                 </form>
 
-                <div className="or-divider">OR</div>
-
-                <form onSubmit={(e) => {e.preventDefault(); getRecipe("dish")}} className="add-ingredient-form">
+                <form onSubmit={(e) => {e.preventDefault(); getRecipe("dish")}} className="add-ingredient-form dish-bar-form">
                     <input 
                         type="text" 
-                        placeholder="Enter dish name (e.g. Nihari / بریانی)" 
+                        placeholder="Enter dish name (e.g. Biryani / نہاری)" 
                         value={dishName}
                         onChange={(e) => setDishName(e.target.value)}
                         required
@@ -94,7 +96,7 @@ export default function Main() {
                 </div>
             )}
 
-            {loading && <p className="pulse">Chef Zubair is thinking in {isUrdu ? "Urdu" : "English"}... 🍳</p>}
+            {loading && <p className="pulse">Chef Zubair is writing in {language}... 🍳</p>}
 
             {recipe && <ZubairRecipe markdown={recipe} />}
             
