@@ -25,11 +25,11 @@ export default function Main() {
         setRecipe(""); 
         setLoading(true);
 
-        const languagePrompt = `Please provide the recipe in ${language}. Remember: No Hindi, No Arabic. Use Urdu, but use English words for any difficult cooking terms.`;
+        const languageInstruction = `IMPORTANT: Provide the entire response in ${language}. If I wrote in Roman Urdu, respond in ${language === "Urdu" ? "Urdu script" : "English"}. Avoid Hindi/Arabic.`;
         
         const finalPrompt = mode === "dish" 
-            ? `Give me a full recipe for ${dishName}. ${languagePrompt}`
-            : `I have these ingredients: ${ingredients.join(", ")}. Suggest a recipe. ${languagePrompt}`;
+            ? `I want a full recipe for the dish: "${dishName}". ${languageInstruction}`
+            : `I have these ingredients: ${ingredients.join(", ")}. Suggest a recipe. ${languageInstruction}`;
 
         try {
             const recipeMarkdown = await getRecipeFromGrok(finalPrompt);
@@ -51,9 +51,7 @@ export default function Main() {
 
     function handleDishSubmit(e) {
         e.preventDefault();
-        if (dishName) {
-            getRecipe("dish");
-        }
+        if (dishName) getRecipe("dish");
     }
 
     function clearApp() {
@@ -64,11 +62,28 @@ export default function Main() {
 
     return (
         <main style={{ paddingBottom: "100px" }}>
+            <div className="language-selector">
+                <p>Select Recipe Language:</p>
+                <button 
+                    className={language === "English" ? "active-lang" : ""} 
+                    onClick={() => setLanguage("English")}
+                >English</button>
+                <button 
+                    className={language === "Urdu" ? "active-lang" : ""} 
+                    onClick={() => setLanguage("Urdu")}
+                >Urdu (اردو)</button>
+            </div>
+
+            <div className="helper-box">
+                <p>💡 <strong>Tip:</strong> If you want a specific dish (e.g., Biryani), use the <strong>Dish Bar</strong>. <br />
+                If you have random ingredients, add <strong>at least 4</strong> to the list to get a recipe.</p>
+            </div>
+
             <div className="forms-container">
                 <form ref={formRef} action={addIngredient} className="add-ingredient-form">
                     <input 
                         type="text" 
-                        placeholder="e.g. mutton" 
+                        placeholder="Add ingredient (e.g. mutton)" 
                         name="ingredient"
                         required
                     />
@@ -80,12 +95,12 @@ export default function Main() {
                 <form onSubmit={handleDishSubmit} className="add-ingredient-form">
                     <input 
                         type="text" 
-                        placeholder="Enter dish name (e.g. Biryani)" 
+                        placeholder="Enter specific dish name..." 
                         value={dishName}
                         onChange={(e) => setDishName(e.target.value)}
                         required
                     />
-                    <button type="submit">Get Dish Recipe</button>
+                    <button type="submit" className="dish-btn">Get Whole Dish Recipe</button>
                 </form>
             </div>
 
@@ -94,8 +109,6 @@ export default function Main() {
                     <IngredientsList 
                         ingredients={ingredients} 
                         getRecipe={() => getRecipe("ingredients")} 
-                        language={language}
-                        setLanguage={setLanguage}
                     />
                     <button className="clear-btn" onClick={clearApp}>
                         ↺ Reset Kitchen
@@ -103,7 +116,7 @@ export default function Main() {
                 </div>
             )}
 
-            {loading && <p className="pulse">Chef Zubair is thinking... 🍳</p>}
+            {loading && <p className="pulse">Chef Zubair is thinking in {language}... 🍳</p>}
 
             {recipe && <ZubairRecipe markdown={recipe} />}
             
