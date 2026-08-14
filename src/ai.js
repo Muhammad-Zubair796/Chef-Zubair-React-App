@@ -1,26 +1,27 @@
-//ai.js
 import OpenAI from "openai";
 
 const SYSTEM_PROMPT = `
-You are an assistant that receives a list of ingredients that a user has and suggests a recipe they could make with some or all of those ingredients. Format your response in markdown.
+You are Chef Zubair. You suggest recipes based on ingredients or dish names. 
+STRICT LANGUAGE RULES:
+1. Use only Urdu or English.
+2. ABSOLUTELY NO Hindi or Arabic.
+3. If a specific cooking term or ingredient name is difficult or uncommon in Urdu, use the English word instead.
+4. Format your response in markdown.
 `;
 
 const openai = new OpenAI({
-    apiKey: import.meta.env.VITE_GROK_API_KEY, // For Vite
-    
+    apiKey: import.meta.env.VITE_GROK_API_KEY,
     baseURL: "https://api.groq.com/openai/v1",
     dangerouslyAllowBrowser: true,
 });
 
-export async function getRecipeFromGrok(ingredientsArr) {
-    const ingredientsString = ingredientsArr.join(", ");
-
+export async function getRecipeFromGrok(prompt) {
     try {
         const response = await openai.chat.completions.create({
             model: "llama-3.3-70b-versatile", 
             messages: [
                 { role: "system", content: SYSTEM_PROMPT },
-                { role: "user", content: `I have ${ingredientsString}. Please give me a recipe!` },
+                { role: "user", content: prompt },
             ],
         });
 

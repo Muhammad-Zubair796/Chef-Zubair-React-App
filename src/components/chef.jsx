@@ -21,17 +21,15 @@ export default function Main() {
         }
     }, [recipe, loading, ingredients]);
 
-    async function getRecipe(type = "ingredients") {
+    async function getRecipe(mode = "ingredients") {
         setRecipe(""); 
         setLoading(true);
+
+        const languagePrompt = `Please provide the recipe in ${language}. Remember: No Hindi, No Arabic. Use Urdu, but use English words for any difficult cooking terms.`;
         
-        // Constructing the strict language and content prompt
-        const languageInstruction = `Provide the recipe in ${language}. 
-            CRITICAL: Avoid using Hindi or Arabic. Use Urdu translation only. 
-            If a specific cooking word is difficult or uncommon in Urdu, use the English word instead.`;
-        
-        const searchTarget = type === "dish" ? `Dish Name: ${dishName}` : `Ingredients: ${ingredients.join(", ")}`;
-        const finalPrompt = `${searchTarget}. ${languageInstruction}`;
+        const finalPrompt = mode === "dish" 
+            ? `Give me a full recipe for ${dishName}. ${languagePrompt}`
+            : `I have these ingredients: ${ingredients.join(", ")}. Suggest a recipe. ${languagePrompt}`;
 
         try {
             const recipeMarkdown = await getRecipeFromGrok(finalPrompt);
@@ -66,7 +64,7 @@ export default function Main() {
 
     return (
         <main style={{ paddingBottom: "100px" }}>
-            <div className="input-sections">
+            <div className="forms-container">
                 <form ref={formRef} action={addIngredient} className="add-ingredient-form">
                     <input 
                         type="text" 
@@ -79,7 +77,7 @@ export default function Main() {
 
                 <div className="or-divider">OR</div>
 
-                <form onSubmit={handleDishSubmit} className="add-ingredient-form dish-form">
+                <form onSubmit={handleDishSubmit} className="add-ingredient-form">
                     <input 
                         type="text" 
                         placeholder="Enter dish name (e.g. Biryani)" 
@@ -87,7 +85,7 @@ export default function Main() {
                         onChange={(e) => setDishName(e.target.value)}
                         required
                     />
-                    <button type="submit" className="dish-btn">Get Dish Recipe</button>
+                    <button type="submit">Get Dish Recipe</button>
                 </form>
             </div>
 

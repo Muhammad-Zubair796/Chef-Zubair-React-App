@@ -9,25 +9,23 @@ export default function IngredientsList(props) {
 
     return (
         <section>
-            <div className="ingredients-header">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <h2>Ingredients on Hand</h2>
                 <button 
-                    className="lang-toggle" 
+                    className="lang-toggle"
                     onClick={() => setLanguage(prev => prev === "English" ? "Urdu" : "English")}
                 >
                     🌐 Mode: {language}
                 </button>
             </div>
-            
             <ul className='ingredients-list' aria-live='polite'>
                 {ingredientsListItems}
             </ul>
-            
             {ingredients.length > 3 && (
                 <div className='get-recipe-container'>
                     <div className="get-recipe-text">
                         <h3>Ready for a recipe?</h3>
-                        <p>Generate a recipe in <strong>{language}</strong> based on your ingredients.</p>
+                        <p>Generate a recipe in {language} based on the ingredients you have added.</p>
                     </div>
                     <button onClick={getRecipe}>Get a recipe</button>
                 </div>
