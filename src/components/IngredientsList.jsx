@@ -8,23 +8,23 @@ export default function IngredientsList(props) {
     ))
 
     return (
-        <section>
+        <section className="ingredients-section">
             <h2>Ingredients on Hand</h2>
             <ul className='ingredients-list' aria-live='polite'>
                 {ingredientsListItems}
             </ul>
             
-            {ingredients.length < 4 && (
-                <p className="warning-text">Add {4 - ingredients.length} more ingredient(s) to unlock the recipe generator!</p>
-            )}
-
-            {ingredients.length >= 4 && (
+            {ingredients.length < 4 ? (
+                <div className="requirement-notice">
+                    <p>Add <strong>{4 - ingredients.length}</strong> more ingredient{ingredients.length === 3 ? "" : "s"} to generate a recipe suggestion.</p>
+                </div>
+            ) : (
                 <div className='get-recipe-container'>
                     <div className="get-recipe-text">
                         <h3>Ready for a recipe?</h3>
-                        <p>You have enough ingredients! Chef Zubair can now suggest a dish.</p>
+                        <p>You've added enough ingredients! Let's see what Chef Zubair suggests.</p>
                     </div>
-                    <button onClick={getRecipe}>Get a recipe</button>
+                    <button className="generate-btn" onClick={getRecipe}>Get a recipe</button>
                 </div>
             )}
         </section>
