@@ -22,12 +22,19 @@ export default function Main() {
         setRecipe(""); 
         setLoading(true);
         
-        const prompt = mode === "dish" 
-            ? `Give me a full recipe for "${dishName}" in ${language} mode. Avoid Hindi/Arabic.`
-            : `I have: ${ingredients.join(", ")}. Suggest a recipe in ${language} mode. Avoid Hindi/Arabic.`;
+        // Nuclear instructions for the AI to stop mixing scripts
+        const scriptInstruction = language === "Urdu" 
+            ? "STRICT: Use ONLY Urdu Script (Nastaliq). Do not use English/Latin letters." 
+            : language === "Roman Urdu" 
+            ? "STRICT: Use ONLY Latin/English letters (Roman Urdu). Do not use Urdu Script." 
+            : "Use English.";
+
+        const finalPrompt = mode === "dish" 
+            ? `Give me a full recipe for "${dishName}". Mode: ${language}. ${scriptInstruction} Avoid Hindi/Arabic.`
+            : `I have: ${ingredients.join(", ")}. Suggest a recipe. Mode: ${language}. ${scriptInstruction} Avoid Hindi/Arabic.`;
 
         try {
-            const recipeMarkdown = await getRecipeFromGrok(prompt);
+            const recipeMarkdown = await getRecipeFromGrok(finalPrompt);
             setRecipe(recipeMarkdown);
         } catch (err) {
             setRecipe("Sorry bhai, something went wrong.");
@@ -46,7 +53,6 @@ export default function Main() {
 
     return (
         <main style={{ paddingBottom: "100px" }}>
-            {/* 3-OPTION RADIO TOGGLE */}
             <div className="radio-toggle-container">
                 <label className="radio-label">
                     <input type="radio" name="lang" value="English" checked={language === "English"} onChange={() => setLanguage("English")} />

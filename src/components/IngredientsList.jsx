@@ -25,4 +25,4 @@ export default function IngredientsList(props) {
             )}
         </section>
     )
-}
+}//src\components\IngredientsList.jsx
