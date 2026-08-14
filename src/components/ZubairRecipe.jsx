@@ -29,4 +29,4 @@ export default function ZubairRecipe({ markdown }) {
             </article>
         </section>
     );
-}
+}//src\components\ZubairRecipe.jsx
