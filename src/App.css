@@ -1,0 +1,27 @@
+/* Force the app to fit the screen exactly */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* This kills the horizontal scroll */
+  background-color: #0f0f0e; /* Match your app background */
+}
+
+#root {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make sure images or wide boxes don't push the screen out */
+* {
+  box-sizing: border-box;
+}
+
+img, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
